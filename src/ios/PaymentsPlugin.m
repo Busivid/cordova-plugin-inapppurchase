@@ -121,7 +121,7 @@
     }];
 }
 
-- (void)getReceipt:(CDVInvokedUrlCommand *)command {
+- (void)refreshReceipt:(CDVInvokedUrlCommand *)command {
     [[RMStore defaultStore] refreshReceiptOnSuccess:^{
         NSString *encReceipt = [self getEncryptedReceipt];
 

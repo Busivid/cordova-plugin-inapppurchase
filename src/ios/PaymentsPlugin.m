@@ -138,6 +138,14 @@
     }];
 }
 
+- (void)getReceipt:(CDVInvokedUrlCommand *)command {
+    NSString *encReceipt = [self getEncryptedReceipt];
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"receipt": NILABLE(encReceipt)}];
+    [pluginResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (NSString*) getEncryptedReceipt {
     NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
     NSData *receiptData = [NSData dataWithContentsOfURL:receiptURL];

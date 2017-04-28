@@ -77,6 +77,16 @@ inAppPurchase.consume = () => {
   return Promise.resolve();
 };
 
+inAppPurchase.getReceipt = () => {
+  return nativeCall('getReceipt').then((res) => {
+    let receipt = '';
+    if (res && res.receipt) {
+      receipt = res.receipt;
+    }
+    return receipt;
+  });
+};
+
 inAppPurchase.refreshReceipt = () => {
   return nativeCall('refreshReceipt').then((res) => {
     let receipt = '';

@@ -219,7 +219,8 @@ public class InAppBillingV6 extends CordovaPlugin {
         skusToReplace.add(skusToReplaceJson.getString(i));
       }
       extraParams = new Bundle();
-      extraParams.putString("accountId", accountId);
+      if (!accountId.isEmpty())
+        extraParams.putString("accountId", accountId);
       extraParams.putBoolean("replaceSkusProration", replaceSkusProration);
       extraParams.putStringArrayList("skusToReplace", skusToReplace);
     } catch (JSONException e) {

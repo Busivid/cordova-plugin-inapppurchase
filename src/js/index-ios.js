@@ -44,7 +44,11 @@ inAppPurchase.getProducts = (productIds) => {
   });
 };
 
-inAppPurchase.buy = (productId) => {
+/**
+ * @param productId The InAppPurchase productId as defined in iTunesConnect
+ * @param extraParams not used - for compatability with Android
+ */
+inAppPurchase.buy = (productId, extraParams) => {
   return new Promise((resolve, reject) => {
     if(!inAppPurchase.utils.validString(productId)) {
       reject(new Error(inAppPurchase.utils.errors[102]));
@@ -64,8 +68,8 @@ inAppPurchase.buy = (productId) => {
  * where this function is required.
  * See README for more details.
  */
-inAppPurchase.subscribe = (productId) => {
-  return inAppPurchase.buy(productId);
+inAppPurchase.subscribe = (productId, extraParams) => {
+  return inAppPurchase.buy(productId, extraParams);
 };
 
 /**

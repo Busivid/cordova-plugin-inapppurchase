@@ -216,7 +216,10 @@ public class InAppBillingV6 extends CordovaPlugin {
       JSONArray skusToReplaceJson = arg1.optJSONArray("skusToReplace");
       ArrayList<String> skusToReplace = new ArrayList<String>();
       for (int i = 0; i < skusToReplaceJson.length(); i++) {
-        skusToReplace.add(skusToReplaceJson.getString(i));
+        String skuToReplace = skusToReplaceJson.getString(i);
+        if (!sku.equals(skuToReplace)) {
+          skusToReplace.add(skuToReplace);
+        }
       }
       extraParams = new Bundle();
       if (!accountId.isEmpty())

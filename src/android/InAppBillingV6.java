@@ -214,10 +214,21 @@ public class InAppBillingV6 extends CordovaPlugin {
       String accountId = arg1.optString("accountId");
       Boolean replaceSkusProration = arg1.optBoolean("replaceSkusProration", true);
       JSONArray skusToReplaceJson = arg1.optJSONArray("skusToReplace");
+
+      List<String> ownedSkus;
+      try {
+        Inventory inventory = iabHelper.queryInventory(true, convertJsonArrayToList(skusToReplaceJson));
+        ownedSkus = inventory.getAllOwnedSkus();
+      } catch (IabException iax) {
+        callbackContext.error(makeError("Unable to retrieve owned products", BAD_RESPONSE_FROM_SERVER));
+        return false;
+      }
+
+      // skusToReplace intent parameter required only passing a currently subscribed plan.
       ArrayList<String> skusToReplace = new ArrayList<String>();
       for (int i = 0; i < skusToReplaceJson.length(); i++) {
         String skuToReplace = skusToReplaceJson.getString(i);
-        if (!sku.equals(skuToReplace)) {
+        if (!sku.equals(skuToReplace) && ownedSkus.contains(skuToReplace)) {
           skusToReplace.add(skuToReplace);
         }
       }
@@ -428,5 +439,13 @@ public class InAppBillingV6 extends CordovaPlugin {
     if (iabHelper != null) iabHelper.dispose();
     iabHelper = null;
     billingInitialized = false;
+  }
+
+  private List<String> convertJsonArrayToList(JSONArray jsonArray) throws JSONException {
+    List<String> list = new ArrayList<String>();
+    for (int i=0; i<jsonArray.length(); i++) {
+      list.add( jsonArray.getString(i) );
+    }
+    return list;
   }
 }
